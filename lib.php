@@ -1,8 +1,6 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/editlib.php');
-require_once($CFG->dirroot . '/lib/weblib.php');
 require_once($CFG->dirroot . '/lib/questionlib.php');
 
 // Define constants if not already defined
@@ -152,7 +150,6 @@ function quizgenerator_get_question_category($courseid)
         
         if (!$category) {
             // Jika belum ada, buat kategori default
-            require_once($CFG->dirroot . '/question/category_class.php');
             
             // Buat kategori default untuk course ini
             $categorydata = new stdClass();

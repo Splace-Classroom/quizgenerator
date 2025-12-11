@@ -1,6 +1,5 @@
 <?php
 require_once('../../config.php');
-require_once($CFG->dirroot . '/question/editlib.php');
 
 $id = required_param('id', PARAM_INT);
 $cm = get_coursemodule_from_id('quizgenerator', $id, 0, false, MUST_EXIST);
