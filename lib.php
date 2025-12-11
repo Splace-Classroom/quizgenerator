@@ -310,7 +310,7 @@ function quizgenerator_call_api($data)
 {
     global $CFG;
 
-    $api_url = 'http://165.22.62.163:5000/quiz';
+    $api_url = 'http://103.155.224.67:5200/quiz';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $api_url);
