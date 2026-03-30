@@ -48,3 +48,11 @@ $string['selectmodule'] = 'Select Module';
 $string['choosemodule'] = 'Choose a module...';
 $string['nomodulesfound'] = 'No modules found in this course';
 $string['moduleselectionhelp'] = 'Select a module from this course to generate questions based on its content';
+
+// Settings strings
+$string['api_endpoint'] = 'API Endpoint URL';
+$string['api_endpoint_desc'] = 'The URL of the Quiz Generator API endpoint. Default: http://103.155.224.67:5200/quiz';
+$string['api_timeout'] = 'API Timeout';
+$string['api_timeout_desc'] = 'The timeout in seconds for API requests. Default: 30 seconds';
+$string['ssl_verify'] = 'Verify SSL Certificate';
+$string['ssl_verify_desc'] = 'Enable SSL certificate verification for API requests. Leave unchecked for development environments';

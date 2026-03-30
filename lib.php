@@ -310,7 +310,20 @@ function quizgenerator_call_api($data)
 {
     global $CFG;
 
-    $api_url = 'http://103.155.224.67:5200/quiz';
+    // Get API endpoint from settings
+    $api_url = get_config('mod_quizgenerator', 'api_endpoint');
+    if (empty($api_url)) {
+        $api_url = 'http://103.155.224.67:5200/quiz'; // Fallback to default
+    }
+
+    // Get timeout from settings
+    $timeout = get_config('mod_quizgenerator', 'api_timeout');
+    if (empty($timeout)) {
+        $timeout = 30; // Default timeout
+    }
+
+    // Get SSL verification setting
+    $ssl_verify = get_config('mod_quizgenerator', 'ssl_verify');
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $api_url);
@@ -321,8 +334,8 @@ function quizgenerator_call_api($data)
         'Content-Length: ' . strlen(json_encode($data))
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For development
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $ssl_verify);
 
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
