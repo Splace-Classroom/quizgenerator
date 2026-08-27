@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_quizgenerator';
 $plugin->release = '0.1.0';
-$plugin->version = 2025022103;
+$plugin->version = 2025022106;
 $plugin->requires = 2022112800;
 $plugin->maturity = MATURITY_ALPHA;

@@ -13,8 +13,29 @@ require_login($course, true, $cm);
 $quizquery = isset($_POST['quizquery']) ? $_POST['quizquery'] : '';
 $course_id = $course->id; // Use the actual course ID
 $module_id = isset($_POST['module_id']) ? (int)$_POST['module_id'] : null;
-$question_type = isset($_POST['question_type']) ? $_POST['question_type'] : 'Choice';
-$number_of_question = isset($_POST['number_of_question']) ? (int)$_POST['number_of_question'] : 3;
+$qtypes = isset($_POST['qtypes']) ? $_POST['qtypes'] : [];
+$qnums = isset($_POST['qnums']) ? $_POST['qnums'] : [];
+
+$selected_types = [];
+$selected_nums = [];
+$total_questions = 0;
+
+foreach ($qtypes as $type) {
+    if (isset($qnums[$type])) {
+        $selected_types[] = $type;
+        $selected_nums[] = $qnums[$type];
+        $total_questions += (int)$qnums[$type];
+    }
+}
+
+if (empty($selected_types)) {
+    $question_type_str = 'Multiple Choice with One Answer';
+    $number_of_question_str = '1';
+    $total_questions = 1;
+} else {
+    $question_type_str = implode(', ', $selected_types);
+    $number_of_question_str = implode(', ', $selected_nums);
+}
 
 // Validate module_id
 if (!$module_id) {
@@ -29,15 +50,12 @@ if (!$module_id) {
 // Define variables for form  
 $saveurl = new moodle_url('/mod/quizgenerator/success.php', array('id' => $id));
 
-// Prepare API request data
 $api_data = array(
+    'query' => $quizquery,
     'course_id' => $course_id,
     'module_id' => $module_id,
-    'threshold' => 0.3, // hardcoded as requested
-    'limit' => max(10, $number_of_question * 2), // Request more to handle filtering
-    'query' => $quizquery,
-    'question_type' => $question_type,
-    'number_of_question' => (string)$number_of_question
+    'question_type' => $question_type_str,
+    'number_of_question' => $number_of_question_str
 );
 
 // Call API to get questions
@@ -57,7 +75,7 @@ if ($api_response && !isset($api_response['error'])) {
         $key = 1;
         foreach ($questions as $index => $question) {
             // Skip if we already have enough questions
-            if ($key > $number_of_question) {
+            if ($key > $total_questions) {
                 break;
             }
 
@@ -155,12 +173,12 @@ if ($api_response && !isset($api_response['error'])) {
     $questionsdata[1] = array(
         'name' => "Sample Question 1",
         'text' => "This is a sample question for testing (API call failed)",
-        'answers' => ($question_type === 'Choice') ? array(
+        'answers' => (strpos($question_type_str, 'Multiple Choice') !== false) ? array(
             array('text' => 'Option A', 'fraction' => 1.0),
             array('text' => 'Option B', 'fraction' => 0.0),
             array('text' => 'Option C', 'fraction' => 0.0)
         ) : null,
-        'type' => ($question_type === 'Choice') ? 'multiplechoice' : 'essay'
+        'type' => (strpos($question_type_str, 'Multiple Choice') !== false) ? 'multiplechoice' : 'essay'
     );
 }
 
@@ -172,7 +190,7 @@ $_SESSION['quiz_course_id'] = $course_id;
 
 <script>
     console.log('=== QUIZ GENERATOR DEBUG ===');
-    console.log('Target Questions:', <?= (int)$number_of_question ?>);
+    console.log('Target Questions:', <?= (int)$total_questions ?>);
     console.log('Questions Generated:', <?= count($questionsdata) ?>);
     <?php if (isset($questions) && !empty($questions)): ?>
         console.log('parsed:', <?= json_encode($questions, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>);
@@ -181,7 +199,7 @@ $_SESSION['quiz_course_id'] = $course_id;
 </script>
 
 <h3>Generated Questions Preview</h3>
-<p><strong>Requested:</strong> <?= $number_of_question ?> questions | <strong>Generated:</strong> <?= count($questionsdata) ?> questions | <strong>Type:</strong> <?= $question_type ?></p>
+<p><strong>Requested:</strong> <?= $total_questions ?> questions | <strong>Generated:</strong> <?= count($questionsdata) ?> questions | <strong>Type:</strong> <?= $question_type_str ?></p>
 <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px;">
     <small><strong>Debug Info:</strong> Check browser console (F12) and server error log for detailed API response comparison</small>
 </div>

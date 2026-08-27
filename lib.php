@@ -325,14 +325,23 @@ function quizgenerator_call_api($data)
     // Get SSL verification setting
     $ssl_verify = get_config('mod_quizgenerator', 'ssl_verify');
 
+    // Get API Key setting
+    $api_key = get_config('mod_quizgenerator', 'api_key');
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $api_url);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    
+    $headers = [
         'Content-Type: application/json',
         'Content-Length: ' . strlen(json_encode($data))
-    ]);
+    ];
+    if (!empty($api_key)) {
+        $headers[] = 'X-API-Key: ' . trim($api_key);
+    }
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $ssl_verify);

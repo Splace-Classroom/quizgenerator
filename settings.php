@@ -35,6 +35,15 @@ if ($ADMIN->fulltree) {
         PARAM_URL
     ));
 
+    // API Key setting
+    $settings->add(new admin_setting_configtext(
+        'mod_quizgenerator/api_key',
+        get_string('api_key', 'mod_quizgenerator'),
+        get_string('api_key_desc', 'mod_quizgenerator'),
+        '',
+        PARAM_TEXT
+    ));
+
     // API Timeout setting (in seconds)
     $settings->add(new admin_setting_configtext(
         'mod_quizgenerator/api_timeout',

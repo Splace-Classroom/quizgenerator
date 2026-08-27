@@ -52,6 +52,8 @@ $string['moduleselectionhelp'] = 'Select a module from this course to generate q
 // Settings strings
 $string['api_endpoint'] = 'API Endpoint URL';
 $string['api_endpoint_desc'] = 'The URL of the Quiz Generator API endpoint. Default: http://103.155.224.67:5200/quiz';
+$string['api_key'] = 'API Key';
+$string['api_key_desc'] = 'The X-API-Key to be sent in the header when making API requests. Leave blank if not required.';
 $string['api_timeout'] = 'API Timeout';
 $string['api_timeout_desc'] = 'The timeout in seconds for API requests. Default: 30 seconds';
 $string['ssl_verify'] = 'Verify SSL Certificate';

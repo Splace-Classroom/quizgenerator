@@ -45,19 +45,20 @@ $formurl = new moodle_url('/mod/quizgenerator/generate.php', ['id' => $id]);
     </div>
 
     <div class="fitem">
-        <label for="question_type" class="fitemtitle">Question Type</label>
+        <label class="fitemtitle">Question Type & Number</label>
         <div class="felement">
-            <select id="question_type" name="question_type" class="custom-select" required>
-                <option value="Choice">Multiple Choice</option>
-                <option value="Essay">Essay</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="fitem">
-        <label for="number_of_question" class="fitemtitle">Number of Questions</label>
-        <div class="felement">
-            <input type="number" id="number_of_question" name="number_of_question" class="form-control" min="1" max="20" value="3" required>
+            <div style="margin-bottom: 5px;">
+                <label><input type="checkbox" name="qtypes[]" value="Multiple Choice with One Answer" checked> Multiple Choice with One Answer</label>
+                <input type="number" name="qnums[Multiple Choice with One Answer]" class="form-control" style="width: 80px; display: inline-block; margin-left: 10px;" min="1" max="20" value="1">
+            </div>
+            <div style="margin-bottom: 5px;">
+                <label><input type="checkbox" name="qtypes[]" value="Essay"> Essay</label>
+                <input type="number" name="qnums[Essay]" class="form-control" style="width: 80px; display: inline-block; margin-left: 10px;" min="1" max="20" value="1">
+            </div>
+            <div style="margin-bottom: 5px;">
+                <label><input type="checkbox" name="qtypes[]" value="Multiple Choice with Multiple Answers"> Multiple Choice with Multiple Answers</label>
+                <input type="number" name="qnums[Multiple Choice with Multiple Answers]" class="form-control" style="width: 80px; display: inline-block; margin-left: 10px;" min="1" max="20" value="1">
+            </div>
         </div>
     </div>
 
