@@ -65,7 +65,11 @@ $questionsdata = array();
 if ($api_response && !isset($api_response['error'])) {
     // Get parsed questions from API response
     $questions = array();
-    if (isset($api_response['parsed'])) {
+    if (isset($api_response['data']['parsed'])) {
+        $questions = $api_response['data']['parsed'];
+    } elseif (isset($api_response['data']['questions'])) {
+        $questions = $api_response['data']['questions'];
+    } elseif (isset($api_response['parsed'])) {
         $questions = $api_response['parsed'];
     } elseif (isset($api_response['questions'])) {
         $questions = $api_response['questions'];
